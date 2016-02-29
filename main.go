@@ -25,11 +25,14 @@ func NewApp() *gin.Engine {
 		if err != nil {
 			panic(err)
 		}
+    ioutil.WriteFile("slides.md", body, 0644)
 		c.String(200, string(body))
 	})
 
 	r.PUT("/slides.md", func(c *gin.Context) {
-		c.String(403, "")
+    body, _ := ioutil.ReadAll(c.Request.Body);
+    ioutil.WriteFile("slides.md", body, 0644)
+		c.String(200, "")
 	})
 
 	return r
