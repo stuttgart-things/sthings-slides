@@ -23,10 +23,11 @@ func NewApp() *gin.Engine {
 		haikunator := haikunator.NewHaikunator()
 		haikunator.TokenLength = 0
 		name := haikunator.Haikunate()
-		path := fmt.Sprintf("%s.md", name)
+		path := fmt.Sprintf("slides/%s.md", name)
 		session := sessions.Default(c)
 		session.Set("name", path)
 		session.Save()
+
 		c.HTML(200, "users/index.tmpl", gin.H{
 			"pubTo": path,
 		})
@@ -37,14 +38,17 @@ func NewApp() *gin.Engine {
 		val := session.Get("name")
 		path, ok := val.(string)
 		if !ok {
-			panic("unlucky")
+			c.String(400, "No context")
 		}
 		if _, err := os.Stat(path); err != nil {
+			// coppy sapmle markdown file to the path
 			body, err := ioutil.ReadFile("initial-slides.md")
 			if err != nil {
 				panic(err)
 			}
 			ioutil.WriteFile(path, body, 0644)
+			c.String(200, string(body))
+			return
 		}
 
 		body, err := ioutil.ReadFile(path)
@@ -59,7 +63,7 @@ func NewApp() *gin.Engine {
 		val := session.Get("name")
 		path, ok := val.(string)
 		if !ok {
-			panic("unlucky")
+			c.String(400, "No context")
 		}
 		body, _ := ioutil.ReadAll(c.Request.Body)
 		ioutil.WriteFile(path, body, 0644)
