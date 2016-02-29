@@ -11,6 +11,14 @@ func NewApp() *gin.Engine {
 
 	r := gin.Default()
 
+	r.LoadHTMLGlob("templates/*.tmpl")
+
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(200, "index.tmpl", gin.H{
+			"pubTo": "Users",
+		})
+	})
+
 	r.GET("/slides.md", func(c *gin.Context) {
 		body, err := ioutil.ReadFile("initial-slides.md")
 		if err != nil {
@@ -19,10 +27,8 @@ func NewApp() *gin.Engine {
 		c.String(200, string(body))
 	})
 
-	r.GET("/", func(c *gin.Context) {
-		c.HTML(200, "index.tmpl", gin.H{
-			"pubTo": "Users",
-		})
+	r.PUT("/slides.md", func(c *gin.Context) {
+		c.String(403, "")
 	})
 
 	// Get user value
