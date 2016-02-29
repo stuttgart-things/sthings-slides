@@ -11,10 +11,11 @@ func NewApp() *gin.Engine {
 
 	r := gin.Default()
 
-	r.LoadHTMLGlob("templates/*.tmpl")
+	r.LoadHTMLGlob("templates/index.tmpl")
+  r.Static("/static", "./static")
 
 	r.GET("/", func(c *gin.Context) {
-		c.HTML(200, "index.tmpl", gin.H{
+		c.HTML(200, "users/index.tmpl", gin.H{
 			"pubTo": "Users",
 		})
 	})
@@ -29,17 +30,6 @@ func NewApp() *gin.Engine {
 
 	r.PUT("/slides.md", func(c *gin.Context) {
 		c.String(403, "")
-	})
-
-	// Get user value
-	r.GET("/user/:name", func(c *gin.Context) {
-		user := c.Params.ByName("name")
-		value, ok := DB[user]
-		if ok {
-			c.JSON(200, gin.H{"user": user, "value": value})
-		} else {
-			c.JSON(200, gin.H{"user": user, "status": "no value"})
-		}
 	})
 
 	return r
