@@ -1,37 +1,68 @@
 package main
 
 import (
+	"fmt"
+	"github.com/atrox/haikunatorgo"
+	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
+	"os"
 )
-
-var DB = make(map[string]string)
 
 func NewApp() *gin.Engine {
 
 	r := gin.Default()
 
+	store := sessions.NewCookieStore([]byte("secret"))
+	r.Use(sessions.Sessions("mysession", store))
+
 	r.LoadHTMLGlob("templates/index.tmpl")
-  r.Static("/static", "./static")
+	r.Static("/static", "./static")
 
 	r.GET("/", func(c *gin.Context) {
+		haikunator := haikunator.NewHaikunator()
+		haikunator.TokenLength = 0
+		name := haikunator.Haikunate()
+		path := fmt.Sprintf("%s.md", name)
+		session := sessions.Default(c)
+		session.Set("name", path)
+		session.Save()
 		c.HTML(200, "users/index.tmpl", gin.H{
-			"pubTo": "Users",
+			"pubTo": path,
 		})
 	})
 
 	r.GET("/slides.md", func(c *gin.Context) {
-		body, err := ioutil.ReadFile("initial-slides.md")
+		session := sessions.Default(c)
+		val := session.Get("name")
+		path, ok := val.(string)
+		if !ok {
+			panic("unlucky")
+		}
+		if _, err := os.Stat(path); err != nil {
+			body, err := ioutil.ReadFile("initial-slides.md")
+			if err != nil {
+				panic(err)
+			}
+			ioutil.WriteFile(path, body, 0644)
+		}
+
+		body, err := ioutil.ReadFile(path)
 		if err != nil {
 			panic(err)
 		}
-    ioutil.WriteFile("slides.md", body, 0644)
 		c.String(200, string(body))
 	})
 
 	r.PUT("/slides.md", func(c *gin.Context) {
-    body, _ := ioutil.ReadAll(c.Request.Body);
-    ioutil.WriteFile("slides.md", body, 0644)
+		session := sessions.Default(c)
+		val := session.Get("name")
+		path, ok := val.(string)
+		if !ok {
+			panic("unlucky")
+		}
+		body, _ := ioutil.ReadAll(c.Request.Body)
+		ioutil.WriteFile(path, body, 0644)
 		c.String(200, "")
 	})
 
