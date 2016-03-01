@@ -1,21 +1,22 @@
 package main
 
 import (
-	. "github.com/franela/goblin"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	. "github.com/franela/goblin"
+	"github.com/gin-gonic/gin"
 )
 
 const Cookie = "Set-Cookie"
 
-func client(method, path, session string) *httptest.ResponseRecorder {
+func client(method, path, cookie string) *httptest.ResponseRecorder {
 	gin.SetMode("test")
 	app := NewApp()
 	req, _ := http.NewRequest(method, path, nil)
-	if len(session) != 0 {
-		req.Header.Set(Cookie, session)
+	if len(cookie) != 0 {
+		req.Header.Set("Cookie", cookie)
 	}
 	w := httptest.NewRecorder()
 	app.ServeHTTP(w, req)
@@ -25,23 +26,22 @@ func client(method, path, session string) *httptest.ResponseRecorder {
 func Test(t *testing.T) {
 	g := Goblin(t)
 	g.Describe("App api", func() {
-		var session string
+		var cookie string
 
 		g.It("Should return 200 on / ", func() {
 			w := client("GET", "/", "")
 
 			g.Assert(w.Code).Equal(200)
-			session = w.HeaderMap.Get(Cookie)
-
+			cookie = w.HeaderMap.Get(Cookie)
 		})
 
 		g.It("Should return 200 on /slides.md ", func() {
-			w := client("GET", "/slides.md", session)
+			w := client("GET", "/slides.md", cookie)
 			g.Assert(w.Code).Equal(200)
 		})
 
 		g.It("Should return 200 on PUT /slides.md ", func() {
-			w := client("PUT", "/slides.md", session)
+			w := client("PUT", "/slides.md", cookie)
 			g.Assert(w.Code).Equal(200)
 		})
 

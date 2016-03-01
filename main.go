@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	log "github.com/Sirupsen/logrus"
-	"github.com/atrox/haikunatorgo"
-	"github.com/gin-gonic/contrib/sessions"
-	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"os"
+
+	log "github.com/Sirupsen/logrus"
+	haikunator "github.com/atrox/haikunatorgo"
+	"github.com/gin-gonic/contrib/sessions"
+	"github.com/gin-gonic/gin"
 )
 
 const SessionHeader = "slide-session"
@@ -39,12 +40,12 @@ func NewApp() *gin.Engine {
 		})
 	})
 
-
 	r.GET("/slides.md", func(c *gin.Context) {
 		session := sessions.Default(c)
 		val := session.Get("name")
 		if val == nil {
 			c.String(400, "No context")
+			return
 		}
 		log.WithFields(log.Fields{
 			"path": val,
@@ -76,6 +77,7 @@ func NewApp() *gin.Engine {
 		val := session.Get("name")
 		if val == nil {
 			c.String(400, "No context")
+			return
 		}
 		log.WithFields(log.Fields{
 			"path": val,
