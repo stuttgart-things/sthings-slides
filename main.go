@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	log "github.com/Sirupsen/logrus"
 	"github.com/atrox/haikunatorgo"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -9,12 +10,14 @@ import (
 	"os"
 )
 
+const SessionHeader = "slide-session"
+
 func NewApp() *gin.Engine {
 
 	r := gin.Default()
 
 	store := sessions.NewCookieStore([]byte("secret"))
-	r.Use(sessions.Sessions("mysession", store))
+	r.Use(sessions.Sessions(SessionHeader, store))
 
 	r.LoadHTMLGlob("templates/index.tmpl")
 	r.Static("/static", "./static")
@@ -24,6 +27,9 @@ func NewApp() *gin.Engine {
 		haikunator.TokenLength = 0
 		name := haikunator.Haikunate()
 		path := fmt.Sprintf("slides/%s.md", name)
+		log.WithFields(log.Fields{
+			"path": path,
+		}).Info("A new session")
 		session := sessions.Default(c)
 		session.Set("name", path)
 		session.Save()
@@ -33,15 +39,22 @@ func NewApp() *gin.Engine {
 		})
 	})
 
+
 	r.GET("/slides.md", func(c *gin.Context) {
 		session := sessions.Default(c)
 		val := session.Get("name")
+		if val == nil {
+			c.String(400, "No context")
+		}
+		log.WithFields(log.Fields{
+			"path": val,
+		}).Info("Got session")
 		path, ok := val.(string)
 		if !ok {
 			c.String(400, "No context")
 		}
 		if _, err := os.Stat(path); err != nil {
-			// coppy sapmle markdown file to the path
+			// copy sample markdown file to the path
 			body, err := ioutil.ReadFile("initial-slides.md")
 			if err != nil {
 				panic(err)
@@ -61,12 +74,23 @@ func NewApp() *gin.Engine {
 	r.PUT("/slides.md", func(c *gin.Context) {
 		session := sessions.Default(c)
 		val := session.Get("name")
+		if val == nil {
+			c.String(400, "No context")
+		}
+		log.WithFields(log.Fields{
+			"path": val,
+		}).Info("Got session")
 		path, ok := val.(string)
 		if !ok {
 			c.String(400, "No context")
+			return
 		}
 		body, _ := ioutil.ReadAll(c.Request.Body)
 		ioutil.WriteFile(path, body, 0644)
+		log.WithFields(log.Fields{
+			"size": len(body),
+			"file": path,
+		}).Info("Wrote to file")
 		c.String(200, "")
 	})
 
