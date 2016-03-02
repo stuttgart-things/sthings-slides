@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os"
+	"strings"
 
 	log "github.com/Sirupsen/logrus"
 	haikunator "github.com/atrox/haikunatorgo"
@@ -24,6 +26,12 @@ func NewApp() *gin.Engine {
 	r.Static("/static", "./static")
 
 	r.GET("/", func(c *gin.Context) {
+
+		fname := c.Param("name")
+		log.WithFields(log.Fields{
+			"name": fname,
+		}).Info("Restore?")
+
 		haikunator := haikunator.NewHaikunator()
 		haikunator.TokenLength = 0
 		name := haikunator.Haikunate()
@@ -94,6 +102,57 @@ func NewApp() *gin.Engine {
 			"file": path,
 		}).Info("Wrote to file")
 		c.String(200, "")
+	})
+
+	r.GET("/stash", func(c *gin.Context) {
+		files, err := ioutil.ReadDir("slides")
+		if err != nil {
+			log.Fatal(err)
+		}
+		var stash []string
+		for _, file := range files {
+			stash = append(stash, file.Name())
+		}
+		c.JSON(200, gin.H{
+			"data": stash,
+		})
+	})
+
+	r.GET("/stash/edit/:name", func(c *gin.Context) {
+
+		name := c.Param("name")
+		log.WithFields(log.Fields{
+			"name": name,
+		}).Info("Restore session?")
+
+		if strings.HasSuffix(name, ".md") {
+			name = name[0 : len(name)-3]
+		}
+		path := fmt.Sprintf("slides/%s.md", name)
+		session := sessions.Default(c)
+		session.Set("name", path)
+		session.Save()
+
+		c.HTML(200, "users/index.tmpl", gin.H{
+			"pubTo": path,
+		})
+	})
+
+	r.GET("/published/:name", func(c *gin.Context) {
+
+		name := c.Param("name")
+		log.WithFields(log.Fields{
+			"name": name,
+		}).Info("Published")
+
+		if strings.HasSuffix(name, ".md") {
+			name = name[0 : len(name)-3]
+		}
+		path := fmt.Sprintf("slides/%s.md", name)
+		session := sessions.Default(c)
+		session.Set("name", path)
+		session.Save()
+		c.Redirect(http.StatusMovedPermanently, "static/preview")
 	})
 
 	return r

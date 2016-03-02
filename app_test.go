@@ -45,6 +45,21 @@ func Test(t *testing.T) {
 			g.Assert(w.Code).Equal(200)
 		})
 
+		g.It("Should return list of slides ", func() {
+			w := client("GET", "/stash", cookie)
+			g.Assert(w.Code).Equal(200)
+		})
+
+		g.It("Should return specific slide in preview", func() {
+			w := client("GET", "/published/shy-cell.md", cookie)
+			g.Assert(w.Code).Equal(200)
+		})
+
+		g.It("Should return specific slide in edit mode", func() {
+			w := client("GET", "/stash/edit/shy-cell.md", cookie)
+			g.Assert(w.Code).Equal(200)
+		})
+
 		g.It("Should works")
 
 	})
