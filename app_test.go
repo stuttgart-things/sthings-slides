@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -12,9 +13,14 @@ import (
 const Cookie = "Set-Cookie"
 
 func client(method, path, cookie string) *httptest.ResponseRecorder {
+	return request(method, path, cookie, "")
+}
+
+func request(method, path, cookie string, body string) *httptest.ResponseRecorder {
 	gin.SetMode("test")
 	app := NewApp()
-	req, _ := http.NewRequest(method, path, nil)
+	payload := bytes.NewBufferString(body)
+	req, _ := http.NewRequest(method, path, payload)
 	if len(cookie) != 0 {
 		req.Header.Set("Cookie", cookie)
 	}
@@ -41,7 +47,7 @@ func Test(t *testing.T) {
 		})
 
 		g.It("Should return 200 on PUT /slides.md ", func() {
-			w := client("PUT", "/slides.md", cookie)
+			w := request("PUT", "/slides.md", cookie, "whatever")
 			g.Assert(w.Code).Equal(200)
 		})
 
@@ -51,12 +57,22 @@ func Test(t *testing.T) {
 		})
 
 		g.It("Should return specific slide in preview", func() {
-			w := client("GET", "/published/shy-cell.md", cookie)
+			w := client("GET", "/published/slides/shy-cell.md", cookie)
 			g.Assert(w.Code).Equal(200)
 		})
 
 		g.It("Should return specific slide in edit mode", func() {
 			w := client("GET", "/stash/edit/shy-cell.md", cookie)
+			g.Assert(w.Code).Equal(200)
+		})
+
+		g.It("Should return specific slide in preview without session", func() {
+			w := client("GET", "/published/slides/shy-cell.md", "")
+			g.Assert(w.Code).Equal(200)
+		})
+
+		g.It("Should return specific slide in edit mode without session", func() {
+			w := client("GET", "/stash/edit/shy-cell.md", "")
 			g.Assert(w.Code).Equal(200)
 		})
 

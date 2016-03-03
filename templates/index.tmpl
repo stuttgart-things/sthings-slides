@@ -1,4 +1,4 @@
-{{ define "users/index.tmpl" }}
+{{ define "index.tmpl" }}
 
 <!doctype html>
 <html lang="en">
@@ -14,7 +14,7 @@
     <body>
         <div id="edit-pane">
           <div id="controls">
-            <a href="static/slides.html" target="_blank" onclick="save();"> Present</a>
+            <a href="/published/{{ .pubTo}}" target="_blank" onclick="save();"> Present</a>
           </div>
           <div id="editor"></div>
         </div>

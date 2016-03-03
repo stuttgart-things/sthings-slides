@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"net/http"
 	"os"
 	"strings"
 
@@ -22,7 +21,7 @@ func NewApp() *gin.Engine {
 	store := sessions.NewCookieStore([]byte("secret"))
 	r.Use(sessions.Sessions(SessionHeader, store))
 
-	r.LoadHTMLGlob("templates/index.tmpl")
+	r.LoadHTMLGlob("templates/*.tmpl")
 	r.Static("/static", "./static")
 
 	r.GET("/", func(c *gin.Context) {
@@ -43,7 +42,7 @@ func NewApp() *gin.Engine {
 		session.Set("name", path)
 		session.Save()
 
-		c.HTML(200, "users/index.tmpl", gin.H{
+		c.HTML(200, "index.tmpl", gin.H{
 			"pubTo": path,
 		})
 	})
@@ -133,12 +132,12 @@ func NewApp() *gin.Engine {
 		session.Set("name", path)
 		session.Save()
 
-		c.HTML(200, "users/index.tmpl", gin.H{
+		c.HTML(200, "index.tmpl", gin.H{
 			"pubTo": path,
 		})
 	})
 
-	r.GET("/published/:name", func(c *gin.Context) {
+	r.GET("/published/slides/:name", func(c *gin.Context) {
 
 		name := c.Param("name")
 		log.WithFields(log.Fields{
@@ -152,7 +151,9 @@ func NewApp() *gin.Engine {
 		session := sessions.Default(c)
 		session.Set("name", path)
 		session.Save()
-		c.Redirect(http.StatusMovedPermanently, "static/preview")
+		c.HTML(200, "slides.tmpl", gin.H{
+			"pubTo": path,
+		})
 	})
 
 	return r
