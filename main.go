@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -47,12 +48,13 @@ func NewApp() *gin.Engine {
 		})
 	})
 
-	r.GET("/slides.md", func(c *gin.Context) {
+	mustHaveSession := func(c *gin.Context) (string, error) {
 		session := sessions.Default(c)
 		val := session.Get("name")
+		emptySession := errors.New("Emtpy session")
 		if val == nil {
 			c.String(400, "No context")
-			return
+			return "", emptySession
 		}
 		log.WithFields(log.Fields{
 			"path": val,
@@ -60,6 +62,15 @@ func NewApp() *gin.Engine {
 		path, ok := val.(string)
 		if !ok {
 			c.String(400, "No context")
+			return "", emptySession
+		}
+		return path, nil
+	}
+
+	r.GET("/slides.md", func(c *gin.Context) {
+		path, err := mustHaveSession(c)
+		if err != nil {
+			return
 		}
 		if _, err := os.Stat(path); err != nil {
 			// copy sample markdown file to the path
@@ -80,18 +91,8 @@ func NewApp() *gin.Engine {
 	})
 
 	r.PUT("/slides.md", func(c *gin.Context) {
-		session := sessions.Default(c)
-		val := session.Get("name")
-		if val == nil {
-			c.String(400, "No context")
-			return
-		}
-		log.WithFields(log.Fields{
-			"path": val,
-		}).Info("Got session")
-		path, ok := val.(string)
-		if !ok {
-			c.String(400, "No context")
+		path, err := mustHaveSession(c)
+		if err != nil {
 			return
 		}
 		body, _ := ioutil.ReadAll(c.Request.Body)
