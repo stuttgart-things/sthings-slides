@@ -13,14 +13,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const SessionHeader = "slide-session"
+const sessionHeader = "slide-session"
 
 func NewApp() *gin.Engine {
 
 	r := gin.Default()
 
 	store := sessions.NewCookieStore([]byte("secret"))
-	r.Use(sessions.Sessions(SessionHeader, store))
+	r.Use(sessions.Sessions(sessionHeader, store))
 
 	r.LoadHTMLGlob("templates/*.tmpl")
 	r.Static("/static", "./static")
