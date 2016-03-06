@@ -1,0 +1,9 @@
+language: go
+
+before_install:
+    mkdir slides
+
+install:
+    go get github.com/franela/goblin
+
+    go get .
