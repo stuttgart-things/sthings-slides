@@ -32,7 +32,7 @@ func NewApp() *gin.Engine {
 			"name": fname,
 		}).Info("Restore?")
 
-		haikunator := haikunator.NewHaikunator()
+		haikunator := haikunator.New()
 		haikunator.TokenLength = 0
 		name := haikunator.Haikunate()
 		path := fmt.Sprintf("slides/%s.md", name)
