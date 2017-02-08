@@ -21,6 +21,13 @@ go run main.go
 
 And then you can just open [http://127.0.0.1:8080](http://127.0.0.1:8080) and it's ready to use with sample slides.
 
+Run with docker
+
+```shell
+docker run -it -p 8080:8080  -v $(pwd)/slides:/app/slides msoedov/hacker-slides
+```
+
+
 ### Todos:
 - Docker image
 

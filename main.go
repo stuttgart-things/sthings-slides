@@ -163,5 +163,6 @@ func NewApp() *gin.Engine {
 
 func main() {
 	r := NewApp()
+	log.Info("Started http://0.0.0.0:8080")
 	r.Run(":8080")
 }
