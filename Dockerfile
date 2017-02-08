@@ -1,11 +1,8 @@
-FROM golang:onbuild
-
-RUN mkdir -p /app
+FROM alpine:3.5
 
 WORKDIR /app
 
 ADD . /app
-
-RUN go build ./main.go
-
+EXPOSE 8080
+ENV GIN_MODE=release
 CMD ["./main"]
