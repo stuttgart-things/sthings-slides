@@ -1,5 +1,9 @@
 REPO=msoedov/hacker-slides
 
+default: repo
+
+repo:
+	@echo $(REPO)
 
 build:
 	@GOOS=linux CGO_ENABLE=0 go build main.go
@@ -7,4 +11,3 @@ build:
 
 push:
 	@docker push $(REPO)
-
