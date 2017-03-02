@@ -1,66 +1,113 @@
 function isPreview() {
-  return !!window.location.search.match(/preview/gi);
+    return !!window.location.search.match(/preview/gi);
 }
 
 function initializeReveal() {
-  // Full list of configuration options available at:
-  // https://github.com/hakimel/reveal.js#configuration
-  Reveal.initialize({
-    controls: true,
-    progress: true,
-    history: true,
-    center: true,
-    transition: 'slide', // none/fade/slide/convex/concave/zoom
-    transitionSpeed: isPreview() ? 'fast' : 'default',
-    embedded: isPreview() ? true : false,
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+        transitionSpeed: isPreview() ? 'fast' : 'default',
+        embedded: isPreview() ? true : false,
 
-      // Optional reveal.js plugins
-    dependencies: [
-    { src: '/static/revealjs/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-    { src: '/static/revealjs/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-    { src: '/static/revealjs/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); }, callback: function() { externalLinksInNewWindow(); } },
-      { src: '/static/revealjs/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-      { src: '/static/revealjs/plugin/zoom-js/zoom.js', async: true },
-        { src: '/static/revealjs/plugin/notes/notes.js', async: true }
-    ]
-  });
+        // Optional reveal.js plugins
+        dependencies: [{
+                src: '/static/reveal.js/lib/js/classList.js',
+                condition: function() {
+                    return !document.body.classList;
+                }
+            },
+
+            // Interpret Markdown in <section> elements
+            {
+                src: '/static/reveal.js/plugin/markdown/marked.js',
+                condition: function() {
+                    return !!document.querySelector('[data-markdown]');
+                }
+            }, {
+                src: '/static/reveal.js/plugin/markdown/markdown.js',
+                condition: function() {
+                    return !!document.querySelector('[data-markdown]');
+                }
+            },
+
+            // Syntax highlight for <code> elements
+            {
+                src: '/static/reveal.js/plugin/highlight/highlight.js',
+                async: true,
+                callback: function() {
+                    hljs.initHighlightingOnLoad();
+                }
+            },
+
+            // Zoom in and out with Alt+click
+            {
+                src: '/static/reveal.js/plugin/zoom-js/zoom.js',
+                async: true
+            },
+
+            // Speaker notes
+            {
+                src: '/static/reveal.js/plugin/notes/notes.js',
+                async: true
+            },
+
+            // MathJax
+            {
+                src: '/static/reveal.js/plugin/math/math.js',
+                async: true
+            }
+
+            {
+                src: '/static/reveal.js/static/revealjs/lib/js/classList.js',
+                condition: function() {
+                    return !document.body.classList;
+                }
+            }
+            d
+        ]
+    });
 }
 
 function highlightAnyCodeBlocks() {
-  $(document).ready(function() {
-    $('pre code').each(function(i, block) {
-      hljs.highlightBlock(block);
+    $(document).ready(function() {
+        $('pre code').each(function(i, block) {
+            hljs.highlightBlock(block);
+        });
     });
-  });
 }
 
 function insertMarkdownReference() {
-  var markdownReference = $('<section/>', {
-    'data-markdown': "/slides.md",
-    'data-separator': "^-( *)-( *)-( *-*)*",
-    'data-separator-notes': "^Note:",
-    'data-charset': "utf-8"
-  });
+    var markdownReference = $('<section/>', {
+        'data-markdown': "/slides.md",
+        'data-separator': "^-( *)-( *)-( *-*)*",
+        'data-separator-notes': "^Note:",
+        'data-charset': "utf-8"
+    });
 
-  $('.slides').html(markdownReference);
+    $('.slides').html(markdownReference);
 }
 
 function scrollToCurrentSlide() {
-  var i = Reveal.getIndices();
-  Reveal.slide(i.h, i.v, i.f);
+    var i = Reveal.getIndices();
+    Reveal.slide(i.h, i.v, i.f);
 }
 
 function reloadMarkdown() {
-  insertMarkdownReference();
-  RevealMarkdown.initialize();
-  highlightAnyCodeBlocks();
-  scrollToCurrentSlide();
+    insertMarkdownReference();
+    RevealMarkdown.initialize();
+    highlightAnyCodeBlocks();
+    scrollToCurrentSlide();
 }
 
 function externalLinksInNewWindow() {
-  $(document.links).filter(function() {
-    return this.hostname != window.location.hostname;
-  }).attr('target', '_blank');
+    $(document.links).filter(function() {
+        return this.hostname != window.location.hostname;
+    }).attr('target', '_blank');
 }
 
 insertMarkdownReference();

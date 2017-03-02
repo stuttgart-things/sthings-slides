@@ -163,6 +163,15 @@ func NewApp() *gin.Engine {
 
 func main() {
 	r := NewApp()
+	port := "8080"
+	if len(os.Args) > 1 {
+		port = os.Args[1]
+	} else {
+		envPort := os.Getenv("PORT")
+		if len(envPort) > 0 {
+			port = envPort
+		}
+	}
 	log.Info("Started http://0.0.0.0:8080")
-	r.Run(":8080")
+	r.Run(fmt.Sprintf(":%s", port))
 }
