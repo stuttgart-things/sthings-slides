@@ -60,7 +60,7 @@ function initializeReveal() {
             {
                 src: '/static/reveal.js/plugin/math/math.js',
                 async: true
-            }
+            },
 
             {
                 src: '/static/reveal.js/static/revealjs/lib/js/classList.js',
@@ -68,7 +68,6 @@ function initializeReveal() {
                     return !document.body.classList;
                 }
             }
-            d
         ]
     });
 }
