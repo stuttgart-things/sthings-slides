@@ -5,6 +5,7 @@ function isPreview() {
 function initializeReveal() {
     // Full list of configuration options available at:
     // https://github.com/hakimel/reveal.js#configuration
+
     Reveal.initialize({
         controls: true,
         progress: true,
@@ -70,6 +71,8 @@ function initializeReveal() {
             }
         ]
     });
+
+    themesCtrl();
 }
 
 function highlightAnyCodeBlocks() {
@@ -111,6 +114,47 @@ function externalLinksInNewWindow() {
 
 insertMarkdownReference();
 initializeReveal();
+
+function themesCtrl() {
+    var defaultTheme = "black.css",
+        currentTheme = localStorage.getItem('theme?') ||
+        defaultTheme;
+
+    function setTheme(theme) {
+        cssEl = $("#theme");
+        cssEl.attr("href", "/static/reveal.js/css/theme/" + theme);
+        localStorage.setItem('theme?', theme);
+    }
+    setTheme(currentTheme);
+
+    if (!isPreview()) {
+        return
+    }
+    var availableThemes = [
+        "black.css",
+        "beige.css",
+        "blood.css",
+        "league.css",
+        "moon.css",
+        "night.css",
+        "serif.css",
+        "simple.css",
+        "sky.css",
+        "solarized.css",
+        "white.css",
+    ];
+    themeEl = $("#themes");
+    availableThemes.forEach(function(theme) {
+        elem = $("<option value=" + theme + ">" + theme + "</option>");
+        themeEl.append(elem);
+    })
+    themeEl.val(currentTheme);
+    themeEl.change(function() {
+        val = themeEl.val()
+        setTheme(val);
+    });
+    themeEl.attr("hidden", false);
+}
 
 // Monkey patch Reveal so we can reload markdown through an
 // inter window message (using the reveal rpc api)
