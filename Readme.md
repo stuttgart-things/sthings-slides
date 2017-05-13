@@ -4,6 +4,8 @@
 
 This repo is a reworked version of [Sandstorm Hacker Slides](https://github.com/jacksingleton/hacker-slides) which features easy set up run outside of Sandstorm and without vagrant-spk. Likewise you can publish and edit your previous markdown slides which is not supported in the original version.
 
+[Demo](https://murmuring-sierra-54081.herokuapp.com)
+
 | Edit mode | Published  |
 |:-------------:|:-------:|:-------:|
 |![1st](https://sc-cdn.scaleengine.net/i/520e2f4a8ca107b0263936507120027e.png)|![1st](https://sc-cdn.scaleengine.net/i/7ae0d31a40b0b9e7acc3f131754874cf.png)|
