@@ -113,8 +113,8 @@ func NewApp() *gin.Engine {
 		for _, file := range files {
 			stash = append(stash, file.Name())
 		}
-		c.JSON(200, gin.H{
-			"data": stash,
+		c.HTML(200, "stash.tmpl", gin.H{
+			"stash": stash,
 		})
 	})
 
