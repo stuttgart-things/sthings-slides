@@ -9,7 +9,7 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	haikunator "github.com/atrox/haikunatorgo"
-	"github.com/gin-gonic/contrib/sessions"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
