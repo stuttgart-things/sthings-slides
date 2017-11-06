@@ -9,7 +9,7 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	haikunator "github.com/atrox/haikunatorgo"
-	"github.com/gin-gonic/contrib/sessions"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -113,8 +113,8 @@ func NewApp() *gin.Engine {
 		for _, file := range files {
 			stash = append(stash, file.Name())
 		}
-		c.JSON(200, gin.H{
-			"data": stash,
+		c.HTML(200, "stash.tmpl", gin.H{
+			"stash": stash,
 		})
 	})
 
