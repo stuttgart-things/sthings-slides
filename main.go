@@ -1,10 +1,12 @@
 package main
 
 import (
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strconv"
 	"strings"
 
 	log "github.com/Sirupsen/logrus"
@@ -15,12 +17,58 @@ import (
 
 const sessionHeader = "slide-session"
 
+func Header(c *gin.Context, key string) string {
+	if values, _ := c.Request.Header[key]; len(values) > 0 {
+		return values[0]
+	}
+	return ""
+}
+
+func BasicAuth() gin.HandlerFunc {
+	realm := "Authorization Required"
+	realm = "Basic realm=" + strconv.Quote(realm)
+	user := os.Getenv("USER")
+	password := os.Getenv("PASSWORD")
+	enabled := isEnabled(user, password)
+	if enabled {
+		log.Warn("Auth mode enabled")
+		log.Warn(fmt.Sprintf("Visit http://%s:%s@0.0.0.0:8080", user, password))
+	}
+	return func(c *gin.Context) {
+		header := Header(c, "Authorization")
+		if enabled && header != authorizationHeader(user, password) {
+			// Credentials doesn't match, we return 401 and abort handlers chain.
+			c.Header("WWW-Authenticate", realm)
+			c.AbortWithStatus(401)
+			return
+		}
+		c.Next()
+	}
+}
+
+func isEnabled(user, password string) bool {
+	switch {
+	case user == "":
+		return false
+	case password == "":
+		return false
+	default:
+		return true
+	}
+}
+
+func authorizationHeader(user, password string) string {
+	base := user + ":" + password
+	return "Basic " + base64.StdEncoding.EncodeToString([]byte(base))
+}
+
 func NewApp() *gin.Engine {
 
 	r := gin.Default()
 
 	store := sessions.NewCookieStore([]byte("secret"))
 	r.Use(sessions.Sessions(sessionHeader, store))
+	r.Use(BasicAuth())
 
 	r.LoadHTMLGlob("templates/*.tmpl")
 	r.Static("/static", "./static")
