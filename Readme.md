@@ -16,6 +16,7 @@ This repo is a reworked version of [Sandstorm Hacker Slides](https://github.com/
 - Pdf print
 - [Demo version](https://murmuring-sierra-54081.herokuapp.com)
 - Tiny 10 Mb docker image
+- Optional Basic auth
 
 
 | Edit mode | Published  |
@@ -45,9 +46,23 @@ And then you can just open [http://127.0.0.1:8080](http://127.0.0.1:8080) and it
 Run with docker
 
 ```shell
-docker run -it -p 8080:8080  -v $(pwd)/slides:/app/slides msoedov/hacker-slides
+docker run -it -p 8080:8080 -v $(pwd)/slides:/app/slides msoedov/hacker-slides
 ```
 
+Basic auth (disabled by default)
+```shell
+USER=bob PASSWORD=password1 go run main.go
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+WARN[0000] Auth mode enabled
+WARN[0000] Visit http://bob:password1@0.0.0.0:8080
+```
+
+```shell
+docker run -it -p 8080:8080 -e USER=bob -e PASSWORD=password1 -v $(pwd)/slides:/app/slides msoedov/hacker-slides
+```
 
 Getting Help
 ------------
