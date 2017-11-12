@@ -49,6 +49,8 @@ Run with docker
 docker run -it -p 8080:8080 -v $(pwd)/slides:/app/slides msoedov/hacker-slides
 ```
 
+Protect by password
+----
 Basic auth (disabled by default)
 ```shell
 USER=bob PASSWORD=password1 go run main.go
