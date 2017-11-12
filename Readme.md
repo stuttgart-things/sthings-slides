@@ -49,7 +49,7 @@ Run with docker
 docker run -it -p 8080:8080 -v $(pwd)/slides:/app/slides msoedov/hacker-slides
 ```
 
-Protect by password
+Protect slides with password
 ----
 Basic auth (disabled by default)
 ```shell
