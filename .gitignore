@@ -24,3 +24,4 @@ bin/
 src/
 slides/
 main
+node_modules
