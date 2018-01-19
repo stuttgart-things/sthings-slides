@@ -63,6 +63,10 @@ func authorizationHeader(user, password string) string {
 	return "Basic " + base64.StdEncoding.EncodeToString([]byte(base))
 }
 
+func SlidePath(name string) string {
+	return fmt.Sprintf("slides/%s.md", name)
+}
+
 func NewApp() *gin.Engine {
 
 	r := gin.Default()
@@ -90,7 +94,7 @@ func NewApp() *gin.Engine {
 		} else {
 			name = strings.Replace(latest, ".md", "", 1)
 		}
-		path = fmt.Sprintf("slides/%s.md", name)
+		path = SlidePath(name)
 
 		log.WithFields(log.Fields{
 			"path": path,
@@ -185,7 +189,7 @@ func NewApp() *gin.Engine {
 		if strings.HasSuffix(name, ".md") {
 			name = name[0 : len(name)-3]
 		}
-		path := fmt.Sprintf("slides/%s.md", name)
+		path := SlidePath(name)
 		session := sessions.Default(c)
 		session.Set("name", path)
 		session.Save()
@@ -205,7 +209,7 @@ func NewApp() *gin.Engine {
 		if strings.HasSuffix(name, ".md") {
 			name = name[0 : len(name)-3]
 		}
-		path := fmt.Sprintf("slides/%s.md", name)
+		path := SlidePath(name)
 		session := sessions.Default(c)
 		session.Set("name", path)
 		session.Save()
