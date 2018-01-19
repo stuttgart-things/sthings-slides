@@ -12,3 +12,4 @@ build:
 
 push:
 	@docker push $(REPO):$(GIT_SUMMARY)
+	@docker push $(REPO)
