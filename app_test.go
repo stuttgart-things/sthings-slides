@@ -34,10 +34,10 @@ func Test(t *testing.T) {
 	g.Describe("App api", func() {
 		var cookie string
 
-		g.It("Should return 200 on / ", func() {
+		g.It("Should return 302 on / to redirect to file name ", func() {
 			w := client("GET", "/", "")
 
-			g.Assert(w.Code).Equal(200)
+			g.Assert(w.Code).Equal(302)
 			cookie = w.HeaderMap.Get(Cookie)
 		})
 

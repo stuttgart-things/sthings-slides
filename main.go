@@ -1,65 +1,24 @@
 package main
 
 import (
-	"encoding/base64"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
-	"strconv"
 	"strings"
 
 	log "github.com/Sirupsen/logrus"
 	haikunator "github.com/atrox/haikunatorgo"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/msoedov/hacker-slides/auth"
+	"github.com/msoedov/hacker-slides/files"
 )
 
 const sessionHeader = "slide-session"
 
-func Header(c *gin.Context, key string) string {
-	if values, _ := c.Request.Header[key]; len(values) > 0 {
-		return values[0]
-	}
-	return ""
-}
-
-func BasicAuth() gin.HandlerFunc {
-	realm := "Authorization Required"
-	realm = "Basic realm=" + strconv.Quote(realm)
-	user := os.Getenv("USER")
-	password := os.Getenv("PASSWORD")
-	enabled := isEnabled(user, password)
-	if enabled {
-		log.Warn("Auth mode enabled")
-		log.Warn(fmt.Sprintf("Visit http://%s:%s@0.0.0.0:8080", user, password))
-	}
-	return func(c *gin.Context) {
-		header := Header(c, "Authorization")
-		if enabled && header != authorizationHeader(user, password) {
-			// Credentials doesn't match, we return 401 and abort handlers chain.
-			c.Header("WWW-Authenticate", realm)
-			c.AbortWithStatus(401)
-			return
-		}
-		c.Next()
-	}
-}
-
-func isEnabled(user, password string) bool {
-	switch {
-	case user == "":
-		return false
-	case password == "":
-		return false
-	default:
-		return true
-	}
-}
-
-func authorizationHeader(user, password string) string {
-	base := user + ":" + password
-	return "Basic " + base64.StdEncoding.EncodeToString([]byte(base))
+func SlidePath(name string) string {
+	return fmt.Sprintf("slides/%s.md", name)
 }
 
 func NewApp() *gin.Engine {
@@ -68,22 +27,29 @@ func NewApp() *gin.Engine {
 
 	store := sessions.NewCookieStore([]byte("secret"))
 	r.Use(sessions.Sessions(sessionHeader, store))
-	r.Use(BasicAuth())
+	r.Use(auth.BasicAuth())
 
 	r.LoadHTMLGlob("templates/*.tmpl")
 	r.Static("/static", "./static")
 
 	r.GET("/", func(c *gin.Context) {
-
-		fname := c.Param("name")
+		isNew := c.Query("new")
+		latest := files.LatestFileIn("slides")
 		log.WithFields(log.Fields{
-			"name": fname,
-		}).Info("Restore?")
+			"name":  latest,
+			"isNew": isNew,
+		}).Info("Restoring latest point")
 
-		haikunator := haikunator.New()
-		haikunator.TokenLength = 0
-		name := haikunator.Haikunate()
-		path := fmt.Sprintf("slides/%s.md", name)
+		var path, name string
+		if latest == "" || isNew != "" {
+			haikunator := haikunator.New()
+			haikunator.TokenLength = 0
+			name = haikunator.Haikunate()
+		} else {
+			name = strings.Replace(latest, ".md", "", 1)
+		}
+		path = SlidePath(name)
+
 		log.WithFields(log.Fields{
 			"path": path,
 		}).Info("A new session")
@@ -91,7 +57,8 @@ func NewApp() *gin.Engine {
 		session.Set("name", path)
 		session.Save()
 
-		c.HTML(200, "index.tmpl", gin.H{
+		c.Writer.Header().Set("Location", fmt.Sprintf("/stash/edit/%s", name))
+		c.HTML(302, "index.tmpl", gin.H{
 			"pubTo": path,
 		})
 	})
@@ -176,7 +143,7 @@ func NewApp() *gin.Engine {
 		if strings.HasSuffix(name, ".md") {
 			name = name[0 : len(name)-3]
 		}
-		path := fmt.Sprintf("slides/%s.md", name)
+		path := SlidePath(name)
 		session := sessions.Default(c)
 		session.Set("name", path)
 		session.Save()
@@ -196,7 +163,7 @@ func NewApp() *gin.Engine {
 		if strings.HasSuffix(name, ".md") {
 			name = name[0 : len(name)-3]
 		}
-		path := fmt.Sprintf("slides/%s.md", name)
+		path := SlidePath(name)
 		session := sessions.Default(c)
 		session.Set("name", path)
 		session.Save()
