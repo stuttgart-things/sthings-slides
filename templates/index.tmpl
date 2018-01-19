@@ -14,7 +14,8 @@
     <body>
         <div id="edit-pane">
           <div id="controls">
-          <a href="/stash" target="_blank" onclick="save();"> Stash</a> | 
+            <a href="/?new=true" target="_blank" onclick="save();"> New</a> |
+            <a href="/stash" target="_blank" onclick="save();"> Stash</a> |
             <a href="/published/{{ .pubTo}}" target="_blank" onclick="save();"> Present</a> |
             <a href="/published/{{ .pubTo}}?print-pdf" target="_blank" onclick="save();"> Pdf</a>
           </div>
