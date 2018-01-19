@@ -75,23 +75,22 @@ func NewApp() *gin.Engine {
 	r.Static("/static", "./static")
 
 	r.GET("/", func(c *gin.Context) {
-
+		isNew := c.Query("new")
 		latest := files.LatestFileIn("slides")
 		log.WithFields(log.Fields{
-			"name": latest,
+			"name":  latest,
+			"isNew": isNew,
 		}).Info("Restoring latest point")
 
-		var path string
-		if latest == "" {
+		var path, name string
+		if latest == "" || isNew != "" {
 			haikunator := haikunator.New()
 			haikunator.TokenLength = 0
-			name := haikunator.Haikunate()
-			path = fmt.Sprintf("slides/%s.md", name)
+			name = haikunator.Haikunate()
 		} else {
-			name := latest
-			path = fmt.Sprintf("slides/%s", name)
-
+			name = strings.Replace(latest, ".md", "", 1)
 		}
+		path = fmt.Sprintf("slides/%s.md", name)
 
 		log.WithFields(log.Fields{
 			"path": path,
@@ -100,7 +99,8 @@ func NewApp() *gin.Engine {
 		session.Set("name", path)
 		session.Save()
 
-		c.HTML(200, "index.tmpl", gin.H{
+		c.Writer.Header().Set("Location", fmt.Sprintf("/stash/edit/%s", name))
+		c.HTML(302, "index.tmpl", gin.H{
 			"pubTo": path,
 		})
 	})
