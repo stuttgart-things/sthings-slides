@@ -4,7 +4,7 @@ REPO=msoedov/hacker-slides
 default: repo
 
 repo:
-	@echo $(REPO):$(GIT_SUMMARY) 
+	@echo $(REPO):$(GIT_SUMMARY)
 
 build:
 	@GOOS=linux CGO_ENABLE=0 go build main.go
