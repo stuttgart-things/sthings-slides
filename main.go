@@ -13,6 +13,7 @@ import (
 	haikunator "github.com/atrox/haikunatorgo"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/msoedov/hacker-slides/files"
 )
 
 const sessionHeader = "slide-session"
@@ -75,15 +76,23 @@ func NewApp() *gin.Engine {
 
 	r.GET("/", func(c *gin.Context) {
 
-		fname := c.Param("name")
+		latest := files.LatestFileIn("slides")
 		log.WithFields(log.Fields{
-			"name": fname,
-		}).Info("Restore?")
+			"name": latest,
+		}).Info("Restoring latest point")
 
-		haikunator := haikunator.New()
-		haikunator.TokenLength = 0
-		name := haikunator.Haikunate()
-		path := fmt.Sprintf("slides/%s.md", name)
+		var path string
+		if latest == "" {
+			haikunator := haikunator.New()
+			haikunator.TokenLength = 0
+			name := haikunator.Haikunate()
+			path = fmt.Sprintf("slides/%s.md", name)
+		} else {
+			name := latest
+			path = fmt.Sprintf("slides/%s", name)
+
+		}
+
 		log.WithFields(log.Fields{
 			"path": path,
 		}).Info("A new session")
