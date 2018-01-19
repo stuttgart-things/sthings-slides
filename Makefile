@@ -9,6 +9,7 @@ repo:
 build:
 	@GOOS=linux CGO_ENABLE=0 go build main.go
 	@docker build -t $(REPO):$(GIT_SUMMARY) .
+	@docker tag $(REPO):$(GIT_SUMMARY) $(REPO)
 
 push:
 	@docker push $(REPO):$(GIT_SUMMARY)
