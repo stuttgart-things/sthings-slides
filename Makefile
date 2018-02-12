@@ -14,3 +14,6 @@ build:
 push:
 	@docker push $(REPO):$(GIT_SUMMARY)
 	@docker push $(REPO)
+
+r:
+	@docker run -it -p 8080:8080 $(REPO):$(GIT_SUMMARY)
