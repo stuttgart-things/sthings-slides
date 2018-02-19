@@ -2,11 +2,14 @@
 
 ### Hack together simple slides
 
+<!-- .slide: data-transition="zoom" -->
+
 ---
 
 ## The Basics
 
 - Separate slides using '`---`' on a blank line
+- For vertical slides use '`--`'  
 - Write github flavored markdown
 - Click 'Present' (top right) when you're ready to talk
 
@@ -21,6 +24,50 @@
 
 Note:
 - Anything after `Note:` will only appear here
+
+---
+
+## More markdown (fragments)
+
+* static text
+* fragment <!-- .element: class="fragment" -->
+* fragment grow <!-- .element: class="fragment grow" -->
+* fragment highlight-red <!-- .element: class="fragment highlight-red" -->
+* press key down <!-- .element: class="fragment fade-up" -->
+
+--
+
+## More markdown (tables)
+
+****
+
+|h1|h2|h3|
+|-|-|-|
+|a|b|c|
+
+****
+
+--
+
+## More markdown (code)
+
+```
+version: '2'
+services:
+  slides:
+    image: msoedov/hacker-slides
+
+    ports:
+      - 8080:8080
+    volumes:
+      - ./slides:/app/slides
+    restart: always
+
+    environment:
+     - USER=bob
+     - PASSWORD=pa55
+
+```
 
 ---
 
