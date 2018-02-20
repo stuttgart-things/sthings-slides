@@ -86,7 +86,8 @@ function highlightAnyCodeBlocks() {
 function insertMarkdownReference() {
     var markdownReference = $('<section/>', {
         'data-markdown': "/slides.md",
-        'data-separator': "^-( *)-( *)-( *-*)*",
+        'data-separator': "^---\n",
+        'data-separator-vertical': "^--\n",
         'data-separator-notes': "^Note:",
         'data-charset': "utf-8"
     });
