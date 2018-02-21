@@ -15,5 +15,5 @@ $(function() {
     });
   };
 
-  $('#editor').keyup($.debounce(window.save, 300));
+  $('#editor').keyup($.debounce(window.save, 600));
 });
