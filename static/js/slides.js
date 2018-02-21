@@ -64,7 +64,7 @@ function initializeReveal() {
             },
 
             {
-                src: '/static/reveal.js/static/revealjs/lib/js/classList.js',
+                src: '/static/reveal.js/lib/js/classList.js',
                 condition: function() {
                     return !document.body.classList;
                 }
