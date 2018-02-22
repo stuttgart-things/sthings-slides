@@ -31,6 +31,7 @@ func NewApp() *gin.Engine {
 
 	r.LoadHTMLGlob("templates/*.tmpl")
 	r.Static("/static", "./static")
+	r.Static("/images", "./slides/images")
 
 	r.GET("/", func(c *gin.Context) {
 		isNew := c.Query("new")

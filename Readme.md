@@ -67,6 +67,17 @@ WARN[0000] Visit http://bob:password1@0.0.0.0:8080
 docker run -it -p 8080:8080 -e USER=bob -e PASSWORD=password1 -v $(pwd)/slides:/app/slides msoedov/hacker-slides
 ```
 
+Use local images
+----
+Store pictures you want to use in the images subfolder, slides/images/ and reference them in the editor as Markdown:
+```
+![demoPicture](../../images/demo.png)
+```
+or as HTML:
+```
+<img src="../../images/demo.png">
+```
+
 Getting Help
 ------------
 
