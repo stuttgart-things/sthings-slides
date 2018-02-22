@@ -127,7 +127,9 @@ func NewApp() *gin.Engine {
 		}
 		var stash []string
 		for _, file := range files {
-			stash = append(stash, file.Name())
+      if file.Name() != "images" {
+			 stash = append(stash, file.Name())      
+      }
 		}
 		c.HTML(200, "stash.tmpl", gin.H{
 			"stash": stash,

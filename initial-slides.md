@@ -69,6 +69,26 @@ services:
 
 ```
 
+--
+
+## Local images
+
+![demoPicture](../../images/demo.png)
+
+Copy images into slides/images/ & include with MD:
+
+```
+![demoPicture](../../images/demo.png)
+
+```
+or HTML:
+
+```
+<img src="../../images/demo.png">
+
+```
+
+
 ---
 
 ## Learn more
