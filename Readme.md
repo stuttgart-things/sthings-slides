@@ -71,11 +71,11 @@ Use local images
 ----
 Store pictures you want to use in the images subfolder, slides/images/ and reference them in the editor as Markdown:
 ```
-![demoPicture](../../images/demo.png)
+![demoPicture](/images/demo.png)
 ```
 or as HTML:
 ```
-<img src="../../images/demo.png">
+<img src="/images/demo.png">
 ```
 
 Getting Help
