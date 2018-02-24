@@ -12,6 +12,7 @@ import (
 	haikunator "github.com/atrox/haikunatorgo"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	cache "github.com/hashicorp/golang-lru"
 	"github.com/msoedov/hacker-slides/auth"
 	"github.com/msoedov/hacker-slides/files"
 )
@@ -27,6 +28,10 @@ func NewApp() *gin.Engine {
 	r := gin.Default()
 
 	store := sessions.NewCookieStore([]byte("secret"))
+	arc, err := cache.NewARC(10)
+	if err != nil {
+		log.Fatalf("Failied to allocate cache %#v", err)
+	}
 	r.Use(sessions.Sessions(sessionHeader, store))
 	r.Use(auth.BasicAuth())
 
@@ -100,11 +105,20 @@ func NewApp() *gin.Engine {
 			return
 		}
 
-		body, err := ioutil.ReadFile(path)
-		if err != nil {
-			panic(err)
+		var slide string
+		cached, ok := arc.Get(path)
+		if ok {
+			slide = string(cached.([]byte))
+		} else {
+			body, err := ioutil.ReadFile(path)
+			if err != nil {
+				log.Errorf("Failied to read file %#v", err)
+				c.Abort()
+				return
+			}
+			slide = string(body)
 		}
-		c.String(200, string(body))
+		c.String(200, slide)
 	})
 
 	r.PUT("/slides.md", func(c *gin.Context) {
@@ -113,11 +127,12 @@ func NewApp() *gin.Engine {
 			return
 		}
 		body, _ := ioutil.ReadAll(c.Request.Body)
-		ioutil.WriteFile(path, body, 0644)
+		arc.Add(path, body)
+		go ioutil.WriteFile(path, body, 0644)
 		log.WithFields(log.Fields{
 			"size": len(body),
 			"file": path,
-		}).Info("Wrote to file")
+		}).Info("Async wrote to file")
 		c.String(200, "")
 	})
 
