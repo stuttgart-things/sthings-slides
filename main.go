@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"sort"
 	"strings"
 
 	log "github.com/Sirupsen/logrus"
@@ -125,6 +126,11 @@ func NewApp() *gin.Engine {
 		if err != nil {
 			log.Fatal(err)
 		}
+
+		sort.Slice(files, func(i, j int) bool {
+			return files[i].ModTime().Unix() > files[j].ModTime().Unix()
+		})
+
 		var stash []string
 		for _, file := range files {
 			if file.IsDir() {
