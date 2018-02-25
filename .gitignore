@@ -26,3 +26,4 @@ slides/
 main
 node_modules
 hacker-slides
+vendor/
