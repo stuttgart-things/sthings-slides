@@ -1,11 +1,11 @@
-$(function() {
+$(function () {
   function reloadMarkdown() {
     $('#slides-frame')[0].contentWindow.postMessage(JSON.stringify({
       method: 'reloadMarkdown'
     }), window.location.origin);
   }
 
-  window.save = function() {
+  window.save = function () {
     var editor = ace.edit("editor");
 
     $.ajax("/slides.md", {

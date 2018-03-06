@@ -73,7 +73,7 @@ func NewApp() *gin.Engine {
 	mustHaveSession := func(c *gin.Context) (string, error) {
 		session := sessions.Default(c)
 		val := session.Get("name")
-		emptySession := errors.New("Emtpy session")
+		emptySession := errors.New("Empty session")
 		if val == nil {
 			c.String(400, "No context")
 			return "", emptySession
