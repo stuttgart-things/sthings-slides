@@ -17,58 +17,58 @@ function initializeReveal() {
 
         // Optional reveal.js plugins
         dependencies: [{
-                src: '/static/reveal.js/lib/js/classList.js',
-                condition: function() {
-                    return !document.body.classList;
-                }
-            },
-
-            // Interpret Markdown in <section> elements
-            {
-                src: '/static/reveal.js/plugin/markdown/marked.js',
-                condition: function() {
-                    return !!document.querySelector('[data-markdown]');
-                }
-            }, {
-                src: '/static/reveal.js/plugin/markdown/markdown.js',
-                condition: function() {
-                    return !!document.querySelector('[data-markdown]');
-                }
-            },
-
-            // Syntax highlight for <code> elements
-            {
-                src: '/static/reveal.js/plugin/highlight/highlight.js',
-                async: true,
-                callback: function() {
-                    hljs.initHighlightingOnLoad();
-                }
-            },
-
-            // Zoom in and out with Alt+click
-            {
-                src: '/static/reveal.js/plugin/zoom-js/zoom.js',
-                async: true
-            },
-
-            // Speaker notes
-            {
-                src: '/static/reveal.js/plugin/notes/notes.js',
-                async: true
-            },
-
-            // MathJax
-            {
-                src: '/static/reveal.js/plugin/math/math.js',
-                async: true
-            },
-
-            {
-                src: '/static/reveal.js/lib/js/classList.js',
-                condition: function() {
-                    return !document.body.classList;
-                }
+            src: '/static/reveal.js/lib/js/classList.js',
+            condition: function () {
+                return !document.body.classList;
             }
+        },
+
+        // Interpret Markdown in <section> elements
+        {
+            src: '/static/reveal.js/plugin/markdown/marked.js',
+            condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+        }, {
+            src: '/static/reveal.js/plugin/markdown/markdown.js',
+            condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+        },
+
+        // Syntax highlight for <code> elements
+        {
+            src: '/static/reveal.js/plugin/highlight/highlight.js',
+            async: true,
+            callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+        },
+
+        // Zoom in and out with Alt+click
+        {
+            src: '/static/reveal.js/plugin/zoom-js/zoom.js',
+            async: true
+        },
+
+        // Speaker notes
+        {
+            src: '/static/reveal.js/plugin/notes/notes.js',
+            async: true
+        },
+
+        // MathJax
+        {
+            src: '/static/reveal.js/plugin/math/math.js',
+            async: true
+        },
+
+        {
+            src: '/static/reveal.js/lib/js/classList.js',
+            condition: function () {
+                return !document.body.classList;
+            }
+        }
         ]
     });
 
@@ -76,8 +76,8 @@ function initializeReveal() {
 }
 
 function highlightAnyCodeBlocks() {
-    $(document).ready(function() {
-        $('pre code').each(function(i, block) {
+    $(document).ready(function () {
+        $('pre code').each(function (i, block) {
             hljs.highlightBlock(block);
         });
     });
@@ -108,7 +108,7 @@ function reloadMarkdown() {
 }
 
 function externalLinksInNewWindow() {
-    $(document.links).filter(function() {
+    $(document.links).filter(function () {
         return this.hostname != window.location.hostname;
     }).attr('target', '_blank');
 }
@@ -119,7 +119,7 @@ initializeReveal();
 function themesCtrl() {
     var defaultTheme = "black.css",
         currentTheme = localStorage.getItem('theme?') ||
-        defaultTheme;
+            defaultTheme;
 
     function setTheme(theme) {
         cssEl = $("#theme");
@@ -145,12 +145,12 @@ function themesCtrl() {
         "white.css",
     ];
     themeEl = $("#themes");
-    availableThemes.forEach(function(theme) {
+    availableThemes.forEach(function (theme) {
         elem = $("<option value=" + theme + ">" + theme + "</option>");
         themeEl.append(elem);
     })
     themeEl.val(currentTheme);
-    themeEl.change(function() {
+    themeEl.change(function () {
         val = themeEl.val()
         setTheme(val);
     });

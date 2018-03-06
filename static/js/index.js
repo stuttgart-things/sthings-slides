@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 
     function slideSeparatorLines(text) {
         var lines = text.split('\n');
@@ -19,7 +19,7 @@ $(function() {
         var text = ace.edit("editor").getValue();
         var separatorPositions = slideSeparatorLines(text);
         var slideNumber = separatorPositions.length;
-        separatorPositions.every(function(pos, num) {
+        separatorPositions.every(function (pos, num) {
             if (pos >= cursorLine) {
                 slideNumber = num;
                 return false;
@@ -35,14 +35,14 @@ $(function() {
     editor.getSession().setMode("ace/mode/markdown");
     editor.getSession().setUseWrapMode(true);
     editor.setShowPrintMargin(true);
-    $.get('/slides.md', function(data) {
+    $.get('/slides.md', function (data) {
         editor.setValue(data, -1);
     });
     var lastSRow = -1;
-    ace.edit('editor').getSession().selection.on('changeCursor', function(e) {
+    ace.edit('editor').getSession().selection.on('changeCursor', function (e) {
         var cursorRow = ace.edit('editor').getCursorPosition().row;
-        if(lastSRow === cursorRow){
-          return; // no update
+        if (lastSRow === cursorRow) {
+            return; // no update
         }
         lastSRow = cursorRow;
         var currentSlide = currentCursorSlide(cursorRow);
