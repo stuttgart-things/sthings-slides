@@ -11,6 +11,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	haikunator "github.com/atrox/haikunatorgo"
 	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	cache "github.com/hashicorp/golang-lru"
 	"github.com/msoedov/hacker-slides/auth"
@@ -27,7 +28,7 @@ func NewApp() *gin.Engine {
 
 	r := gin.Default()
 
-	store := sessions.NewCookieStore([]byte("secret"))
+	store := cookie.NewStore([]byte("secret"))
 	arc, err := cache.NewARC(10)
 	if err != nil {
 		log.Fatalf("Failied to allocate cache %#v", err)
