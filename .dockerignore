@@ -3,4 +3,6 @@
 *.swp
 Makefile
 Readme.md
+slides/
+node_modules/
 *.go
