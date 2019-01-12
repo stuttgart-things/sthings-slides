@@ -13,11 +13,10 @@ build:
 
 push:
 	@docker push $(DOCKER_IMAGE)
-	@docker push $(REPO)
 
 r:
 	@docker run -it -p 8080:8080 $(DOCKER_IMAGE)
 
 release:
-	@build
-	@push
+	@make build
+	@make push
