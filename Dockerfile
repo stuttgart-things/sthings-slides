@@ -1,8 +1,21 @@
+FROM golang:1.12 AS compiler
+
+WORKDIR $GOPATH/src/github.com/msoedov/hacker-slides
+
+ENV GO111MODULE on
+COPY . .
+RUN GOOS=linux CGO_ENABLE=0 go build  -a -tags netgo -ldflags '-w -extldflags "-static"' -o app *.go
+RUN cp app /bin/app
+
+
 FROM alpine:3.8
 
-WORKDIR /app
+WORKDIR /srv
 
-COPY . /app
 ENV GIN_MODE=release
-
-CMD ./main $PORT
+RUN mkdir slides
+COPY --from=compiler /bin/app /bin/app
+COPY static static
+COPY templates templates
+COPY initial-slides.md initial-slides.md
+CMD app $PORT
