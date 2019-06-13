@@ -6,8 +6,8 @@ import (
 	"os"
 	"strconv"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 )
 
 func Header(c *gin.Context, key string) string {
