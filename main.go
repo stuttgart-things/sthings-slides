@@ -8,7 +8,6 @@ import (
 	"sort"
 	"strings"
 
-	log "github.com/Sirupsen/logrus"
 	haikunator "github.com/atrox/haikunatorgo"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
@@ -16,6 +15,7 @@ import (
 	cache "github.com/hashicorp/golang-lru"
 	"github.com/msoedov/hacker-slides/auth"
 	"github.com/msoedov/hacker-slides/files"
+	log "github.com/sirupsen/logrus"
 )
 
 const sessionHeader = "slide-session"

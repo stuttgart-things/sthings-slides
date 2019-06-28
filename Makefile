@@ -7,7 +7,6 @@ repo:
 	@echo $(DOCKER_IMAGE)
 
 build:
-	@GOOS=linux CGO_ENABLE=0 go build main.go
 	@docker build -t $(DOCKER_IMAGE) .
 	@docker tag $(DOCKER_IMAGE) $(REPO)
 
