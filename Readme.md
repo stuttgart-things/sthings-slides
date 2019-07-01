@@ -5,7 +5,7 @@
 [![](https://images.microbadger.com/badges/image/msoedov/hacker-slides:latest.svg)](https://microbadger.com/images/msoedov/hacker-slides "Hacker slides image")
 [![Open Source Helpers](https://www.codetriage.com/msoedov/hacker-slides/badges/users.svg)](https://www.codetriage.com/msoedov/hacker-slides)
 
-This repo is a reworked version of [Sandstorm Hacker Slides](https://github.com/jacksingleton/hacker-slides) which features easy set up run outside of Sandstorm and without vagrant-spk. Likewise you can publish and edit your previous markdown slides which is not supported in the original version.
+Hacker Slides is a self hosted reveal.js presentations editor form markdown files.
 
 
 #### Features:
@@ -24,6 +24,8 @@ This repo is a reworked version of [Sandstorm Hacker Slides](https://github.com/
 | --- | --- |
 | ![1st](https://sc-cdn.scaleengine.net/i/520e2f4a8ca107b0263936507120027e.png) | ![1st](https://sc-cdn.scaleengine.net/i/7ae0d31a40b0b9e7acc3f131754874cf.png) |
 |![2nd](https://sc-cdn.scaleengine.net/i/5acba66070e24f76bc7f20224adc611e.png) | ![2nd](https://sc-cdn.scaleengine.net/i/fee3e1374cb13b1d8c292becb7f514ae.png) |
+
+This repo is a reworked version of Sandstorm Hacker Slides which features easy set up run outside of Sandstorm and without vagrant-spk. Likewise you can publish and edit your previous markdown slides which is not supported in the original version.
 
 
 Run from docker image
