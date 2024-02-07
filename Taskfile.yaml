@@ -18,6 +18,12 @@ vars:
 
 tasks:
 
+  lint:
+    desc: Lint code
+    cmds:
+      - cmd: golangci-lint run
+        ignore_error: true
+
   branch:
     desc: Create branch from main
     cmds:
@@ -52,3 +58,19 @@ tasks:
       - gh pr checks $(gh pr list | grep "^[^#;]" | awk '{print $1}') --watch
       - gh pr merge $(gh pr list | grep "^[^#;]" | awk '{print $1}') --auto --rebase --delete-branch
       - git checkout main && git pull
+
+  build-image:
+    desc: Build container image
+    deps: [build-server]
+    cmds:
+      - sudo nerdctl build -t {{ .REGISTRY }}/{{ .REPOSITORY_NAME }}/{{ lower (.PROJECT_NAME) }}:{{ .DATE }}-{{ .UPDATED_TAG_VERSION }} --build-arg VERSION={{ .UPDATED_TAG_VERSION }} --build-arg BUILD_DATE={{ .DATE }} --build-arg COMMIT={{ .GIT_COMMIT }} .
+      - sudo nerdctl push {{ .REGISTRY }}/{{ .REPOSITORY_NAME }}/{{ lower (.PROJECT_NAME) }}:{{ .DATE }}-{{ .UPDATED_TAG_VERSION }}
+
+  build-server:
+    desc: Build server
+    deps: [lint, proto]
+    cmds:
+      - go mod tidy
+      - CGO_ENABLED=0
+      - GOOS=linux
+      - go install -ldflags="-X {{ .MODULE }}/internal.version=v{{ .UPDATED_TAG_VERSION }} -X {{ .MODULE }}/internal.date={{ .DATE }} -X {{ .MODULE }}/internal.commit={{ .GIT_COMMIT }}"

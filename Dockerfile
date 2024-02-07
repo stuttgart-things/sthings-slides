@@ -1,16 +1,14 @@
-FROM golang:1.12 AS compiler
+FROM golang:1.21.1 AS compiler
 
-WORKDIR $GOPATH/src/github.com/msoedov/hacker-slides
+WORKDIR $GOPATH/src/github.com/stuttgart-things/sthingsslides
+COPY . .
 
 ENV GO111MODULE on
-RUN go mod download
+RUN go mod tidy
 
-COPY . .
 RUN GOOS=linux CGO_ENABLE=0 go build  -a -tags netgo -ldflags '-w -extldflags "-static"' -o /bin/app *.go
 
-
-
-FROM alpine:3.8
+FROM alpine:3.19.1
 
 WORKDIR /srv
 

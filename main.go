@@ -166,9 +166,8 @@ func NewApp() *gin.Engine {
 			"name": name,
 		}).Info("Restore session?")
 
-		if strings.HasSuffix(name, ".md") {
-			name = name[0 : len(name)-3]
-		}
+		name = strings.TrimPrefix(name, ".md")
+
 		path := SlidePath(name)
 		session := sessions.Default(c)
 		session.Set("name", path)
@@ -186,9 +185,8 @@ func NewApp() *gin.Engine {
 			"name": name,
 		}).Info("Published")
 
-		if strings.HasSuffix(name, ".md") {
-			name = name[0 : len(name)-3]
-		}
+		name = strings.TrimSuffix(name, ".md")
+
 		path := SlidePath(name)
 		session := sessions.Default(c)
 		session.Set("name", path)
