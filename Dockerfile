@@ -1,4 +1,5 @@
 FROM golang:1.21.1 AS compiler
+LABEL maintainer="Patrick Hermann patrick.hermann@sva.de"
 
 WORKDIR $GOPATH/src/github.com/stuttgart-things/sthingsslides
 COPY . .
