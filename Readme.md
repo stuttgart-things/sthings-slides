@@ -1,87 +1,40 @@
-## Hacker Slides
+# stuttgart-things/sthingsSlides
 
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/msoedov/hacker-slides/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/msoedov/hacker-slides.svg?branch=master)](https://travis-ci.org/msoedov/hacker-slides)
-[![](https://images.microbadger.com/badges/image/msoedov/hacker-slides:latest.svg)](https://microbadger.com/images/msoedov/hacker-slides "Hacker slides image")
-[![Open Source Helpers](https://www.codetriage.com/msoedov/hacker-slides/badges/users.svg)](https://www.codetriage.com/msoedov/hacker-slides)
+reveal.js based markdown sldies editor. 
 
-Hacker Slides is a self hosted reveal.js presentations editor form markdown files.
+## ORIGIN
+This project was forked from: [msoedov/hacker-slides:master](https://github.com/msoedov/hacker-slides). thank you for your great work back in the day.
 
+## Author Information
 
-#### Features:
-
-- Reach ui editor
-- Markdown markup
-- Live reload
-- Color schemes
-- Pdf print
-- [Demo version](https://murmuring-sierra-54081.herokuapp.com)
-- Tiny 10 Mb docker image
-- Optional Basic auth
-
-
-| Edit mode | Published  |
-| --- | --- |
-| ![1st](https://sc-cdn.scaleengine.net/i/520e2f4a8ca107b0263936507120027e.png) | ![1st](https://sc-cdn.scaleengine.net/i/7ae0d31a40b0b9e7acc3f131754874cf.png) |
-|![2nd](https://sc-cdn.scaleengine.net/i/5acba66070e24f76bc7f20224adc611e.png) | ![2nd](https://sc-cdn.scaleengine.net/i/fee3e1374cb13b1d8c292becb7f514ae.png) |
-
-This repo is a reworked version of Sandstorm Hacker Slides which features easy set up run outside of Sandstorm and without vagrant-spk. Likewise you can publish and edit your previous markdown slides which is not supported in the original version.
-
-
-Run from docker image
------
-```shell
-docker run -it -p 8080:8080 -v $(pwd)/slides:/app/slides msoedov/hacker-slides
+```bash
+Patrick Hermann, stuttgart-things 02/2024
 ```
 
-Build locally
-----
-To build and run it locally
-```go
-go get
-go run main.go
+## LICENSE 
 
-[GIN-debug] Listening and serving HTTP on :8080
-```
+<details><summary>The MIT License</summary>
 
-And then you can just open [http://127.0.0.1:8080](http://127.0.0.1:8080) and it's ready to use with sample slides.
+The MIT License (MIT)
 
-Run with docker
+Copyright (c) <2016> Alex Myasoedov, msoedov@gmail.com
 
-```shell
-docker run -it -p 8080:8080 -v $(pwd)/slides:/app/slides msoedov/hacker-slides
-```
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Protect slides with password
-----
-Basic auth (disabled by default)
-```shell
-USER=bob PASSWORD=password1 go run main.go
-[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
- - using env:	export GIN_MODE=release
- - using code:	gin.SetMode(gin.ReleaseMode)
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-WARN[0000] Auth mode enabled
-WARN[0000] Visit http://bob:password1@0.0.0.0:8080
-```
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
-```shell
-docker run -it -p 8080:8080 -e USER=bob -e PASSWORD=password1 -v $(pwd)/slides:/app/slides msoedov/hacker-slides
-```
-
-Use local images
-----
-Store pictures you want to use in the images subfolder, slides/images/ and reference them in the editor as Markdown:
-```
-![demoPicture](/images/demo.png)
-```
-or as HTML:
-```
-<img src="/images/demo.png">
-```
-
-Getting Help
-------------
-
-For **feature requests** and **bug reports**  submit an issue
-to the GitHub issue tracker
+</details>
