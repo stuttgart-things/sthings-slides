@@ -1,7 +1,8 @@
-FROM golang:1.21.1 AS compiler
+FROM golang:1.21.4 AS compiler
 LABEL maintainer="Patrick Hermann patrick.hermann@sva.de"
+LABEL org.opencontainers.image.source https://github.com/stuttgart-things/sthingsSlides
 
-WORKDIR $GOPATH/src/github.com/stuttgart-things/sthingsslides
+WORKDIR $GOPATH/src/github.com/stuttgart-things/sthingsSlides
 COPY . .
 
 ENV GO111MODULE on
