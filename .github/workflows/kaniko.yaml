@@ -17,6 +17,6 @@ jobs:
         with:
           image: aevea/kaniko
           registry: ghcr.io
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.TOKEN }}
           cache: true
           cache_registry: aevea/cache
