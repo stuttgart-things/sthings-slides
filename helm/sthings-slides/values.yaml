@@ -70,6 +70,26 @@ ingress:
       port: 80
       path: /
       pathType: ImplementationSpecific
-    hostname: sthings-slides
-    clusterName: silence2
-    domain: sthings.tiab.ssc.sva.de
+    hostname: slides
+    domain: test.sthings.tiab.ssc.sva.de
+    tls:
+      secretName: slides-tls
+      host: test.sthings.tiab.ssc.sva.de
+
+customresources:
+  certificate:
+    apiVersion: cert-manager.io/v1
+    kind: Certificate
+    metadata:
+      name: sthings-slides
+      namespace: sthings-slides
+      labels:
+        app: sthings-slides
+    spec:
+      commonName: slides.test.sthings.tiab.ssc.sva.de
+      dnsNames:
+      - slides.test.sthings.tiab.ssc.sva.de
+      issuerRef:
+        name: cluster-issuer-approle
+        kind: ClusterIssuer
+      secretName: slides-tls
