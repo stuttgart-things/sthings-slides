@@ -13,13 +13,13 @@ on:
       repository:
         type: choice
         description: Target repository
-        default: stuttgart-things/kaeffken
+        default: stuttgart-things/sthings-slides
         options:
           - stuttgart-things/sthings-slides
       image:
         type: string
         description: Image name
-        default: kaeffken
+        default: sthings-slides
       tag:
         type: string
         description: Image tag       
