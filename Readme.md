@@ -1,4 +1,4 @@
-# stuttgart-things/sthingsSlides
+# stuttgart-things/sthings-slides
 
 reveal.js based markdown sldies editor. 
 
