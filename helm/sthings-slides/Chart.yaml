@@ -1,0 +1,14 @@
+---
+apiVersion: v2
+name: sthings-slides
+description: Helm chart for sthings-slides
+type: application
+version: 22.0827.139
+appVersion: 22.0827.139
+maintainers:
+  - name: Patrick Hermann
+    email: patrick.hermann@sva.de
+dependencies:
+  - name: sthings-helm-toolkit
+    version: 2.4.58
+    repository: oci://eu.gcr.io/stuttgart-things

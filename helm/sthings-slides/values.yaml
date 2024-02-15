@@ -1,0 +1,75 @@
+# Default values for sthings-slides.
+namespace: sthings-slides
+
+global:
+  labels:
+    app: sthings-slides
+
+deployment:
+  name: sthings-slides
+  labels:
+    app: sthings-slides
+  selectorLabels:
+    app: sthings-slides
+  allowPrivilegeEscalation: "true"
+  privileged: "true"
+  runAsNonRoot: "false"
+  readOnlyRootFilesystem: "true"
+  serviceAccount: sthings-slides
+  ports:
+    app-port:
+      containerPort: 8080
+      protocol: TCP
+  probes:
+    livenessProbe:
+      tcpSocket:
+        port: app-port
+    readinessProbe:
+      tcpSocket:
+        port: app-port
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+  containers:
+    sthings-slides:
+      image: scr.cd43.sthings-pve.labul.sva.de/sthings-slides/sthings-slides
+      replicaCount: 1
+      imagePullPolicy: Always
+      tag: 24.0206.2123-v0.1.90
+      securityContext:
+        capabilities: {}
+
+services:
+  sthings-slides:
+    namespace: sthings-slides
+    labels:
+      app: sthings-slides
+    ports:
+      - name: app-port
+        protocol: TCP
+        value: 8080
+        expose:
+          service:
+            type: ClusterIP
+            port: 80
+    selectorLabels:
+      app: sthings-slides
+
+ingress:
+  sthings-slides:
+    name: sthings-slides
+    ingressClassName: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    service:
+      name: sthings-slides-service
+      port: 80
+      path: /
+      pathType: ImplementationSpecific
+    hostname: sthings-slides
+    clusterName: silence2
+    domain: sthings.tiab.ssc.sva.de
