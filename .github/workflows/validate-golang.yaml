@@ -43,7 +43,7 @@ jobs:
       runs-on: arc-runner-scale-set-sthings-slides
       dockerfile: ./Dockerfile
       registry: ghcr.io
-      repository: stuttgart-things/sthings-slides  
+      repository: stuttgart-things  
       image: sthings-slides
       tag: ""
     secrets: inherit
