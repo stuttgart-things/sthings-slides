@@ -1,4 +1,4 @@
-# Hacker Slides
+# STHINGS-SLIDES
 
 ### Hack together simple slides
 
