@@ -1,6 +1,13 @@
 # stuttgart-things/sthings-slides
 
-reveal.js based markdown sldies editor. 
+reveal.js based markdown sldies editor.
+
+## HELM
+
+```bash
+helm upgrade --install slides . -n sthings-slides --create-namespace
+```
+
 
 ## ORIGIN
 This project was forked from: [msoedov/hacker-slides:master](https://github.com/msoedov/hacker-slides). thank you for your great work back in the day.
@@ -11,7 +18,7 @@ This project was forked from: [msoedov/hacker-slides:master](https://github.com/
 Patrick Hermann, stuttgart-things 02/2024
 ```
 
-## LICENSE 
+## LICENSE
 
 <details><summary>The MIT License</summary>
 
