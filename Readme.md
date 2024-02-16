@@ -5,7 +5,10 @@ reveal.js based markdown slides editor
 ## DEPLOYMENT
 
 ```bash
-helm upgrade --install slides . -n sthings-slides --create-namespace
+helm upgrade \
+--install slides \
+. -n sthings-slides \
+--create-namespace
 ```
 
 
