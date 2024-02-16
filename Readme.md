@@ -1,6 +1,6 @@
 # stuttgart-things/sthings-slides
 
-reveal.js based markdown sldies editor.
+reveal.js based markdown slides editor
 
 ## HELM-DEPLOYMENT
 
