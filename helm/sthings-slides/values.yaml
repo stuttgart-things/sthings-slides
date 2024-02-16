@@ -5,6 +5,8 @@ global:
   labels:
     app: sthings-slides
 
+
+
 deployment:
   name: sthings-slides
   labels:
@@ -36,10 +38,10 @@ deployment:
       memory: 256Mi
   containers:
     sthings-slides:
-      image: scr.cd43.sthings-pve.labul.sva.de/sthings-slides/sthings-slides
+      image: ghcr.io/stuttgart-things/sthings-slides
       replicaCount: 1
       imagePullPolicy: Always
-      tag: 24.0206.2123-v0.1.90
+      tag: v2
       securityContext:
         capabilities: {}
 
@@ -71,10 +73,10 @@ ingress:
       path: /
       pathType: ImplementationSpecific
     hostname: slides
-    domain: test.sthings.tiab.ssc.sva.de
+    domain: dev7.4sthings.tiab.ssc.sva.de
     tls:
       secretName: slides-tls
-      host: test.sthings.tiab.ssc.sva.de
+      host: dev7.4sthings.tiab.ssc.sva.de
 
 customresources:
   certificate:
@@ -86,10 +88,54 @@ customresources:
       labels:
         app: sthings-slides
     spec:
-      commonName: slides.test.sthings.tiab.ssc.sva.de
+      commonName: slides.dev7.4sthings.tiab.ssc.sva.de
       dnsNames:
-      - slides.test.sthings.tiab.ssc.sva.de
+      - slides.dev7.4sthings.tiab.ssc.sva.de
       issuerRef:
         name: cluster-issuer-approle
         kind: ClusterIssuer
       secretName: slides-tls
+
+# RBAC
+serviceAccounts:
+  sthings-slides:
+    labels:
+      app: sthings-slides
+
+roles:
+  sthings-slides:
+    labels:
+      app: sthings-slides
+    rules:
+      - apiGroups:
+          - ""
+        resources:
+          - pods
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - patch
+          - delete
+      - apiGroups:
+          - ""
+        resources:
+          - configmaps
+        verbs:
+          - get
+          - list
+          - watch
+
+roleBindings:
+  sthings-slides:
+    labels:
+      app: sthings-slides
+    roleRef:
+      kind: Role
+      name: sthings-slides
+      apiGroup: rbac.authorization.k8s.io
+    subjects:
+      - kind: ServiceAccount
+        name: sthings-slides
+        namespace: sthings-slides
