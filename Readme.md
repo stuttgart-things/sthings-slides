@@ -2,7 +2,7 @@
 
 reveal.js based markdown slides editor
 
-## HELM-DEPLOYMENT
+## DEPLOYMENT
 
 ```bash
 helm upgrade --install slides . -n sthings-slides --create-namespace
@@ -12,7 +12,7 @@ helm upgrade --install slides . -n sthings-slides --create-namespace
 ## ORIGIN
 This project was forked from: [msoedov/hacker-slides:master](https://github.com/msoedov/hacker-slides). thank you for your great work back in the day.
 
-## Author Information
+## AUTHOR
 
 ```bash
 Patrick Hermann, stuttgart-things 02/2024
