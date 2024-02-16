@@ -2,7 +2,7 @@
 
 reveal.js based markdown sldies editor.
 
-## HELM
+## HELM-DEPLOYMENT
 
 ```bash
 helm upgrade --install slides . -n sthings-slides --create-namespace
