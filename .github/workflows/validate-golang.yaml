@@ -26,7 +26,7 @@ jobs:
 
   Build-Kaniko-Image:
     name: Build Kaniko
-    needs: validate-golang
+    needs: Validate-Golang-Code
     uses: stuttgart-things/stuttgart-things/.github/workflows/build-kaniko.yaml@main
     with:
       environment-name: k8s
