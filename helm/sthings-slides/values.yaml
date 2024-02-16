@@ -38,7 +38,7 @@ deployment:
       image: ghcr.io/stuttgart-things/sthings-slides
       replicaCount: 1
       imagePullPolicy: Always
-      tag: v2
+      tag: 2024-02-16-17-17-08 
       securityContext:
         capabilities: {}
 
