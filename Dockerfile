@@ -1,6 +1,6 @@
 FROM golang:1.21.4 AS compiler
 LABEL maintainer="Patrick Hermann patrick.hermann@sva.de"
-LABEL org.opencontainers.image.source https://github.com/stuttgart-things/sthingsSlides
+LABEL org.opencontainers.image.source https://github.com/stuttgart-things/sthings-slides
 
 WORKDIR $GOPATH/src/github.com/stuttgart-things/sthingsSlides
 COPY . .
