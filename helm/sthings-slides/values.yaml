@@ -1,11 +1,8 @@
-# Default values for sthings-slides.
+# DEFAULT VALUES FOR STHINGS-SLIDES.
 namespace: sthings-slides
-
 global:
   labels:
     app: sthings-slides
-
-
 
 deployment:
   name: sthings-slides
