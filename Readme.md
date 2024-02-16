@@ -10,7 +10,8 @@ helm upgrade --install slides . -n sthings-slides --create-namespace
 
 
 ## ORIGIN
-This project was forked from: [msoedov/hacker-slides:master](https://github.com/msoedov/hacker-slides). thank you for your great work back in the day.
+This project was forked from: [msoedov/hacker-slides:master](https://github.com/msoedov/hacker-slides). 
+thank you for your great work back in the day.
 
 ## AUTHOR
 
