@@ -37,18 +37,6 @@ Note:
 
 --
 
-## More markdown (tables)
-
-****
-
-|h1|h2|h3|
-|-|-|-|
-|a|b|c|
-
-****
-
---
-
 ## More markdown (code)
 
 ```
