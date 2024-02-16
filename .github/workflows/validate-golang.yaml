@@ -31,6 +31,7 @@ jobs:
       environment-name: k8s
       runs-on: arc-runner-scale-set-sthings-slides
       kube-linter-version: "0.6.7"
+      helm-chart: true
       continue-error: true
     secrets: inherit
 
