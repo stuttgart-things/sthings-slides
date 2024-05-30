@@ -45,7 +45,7 @@ tasks:
       - |
         echo "ENTER COMMIT MESSAGE"
         read COMMIT_MESSAGE;
-        git add *
+        git add * || true
         git commit -am "$(echo ${COMMIT_MESSAGE})"
         git push origin -u {{ .BRANCH }}
 
@@ -55,6 +55,7 @@ tasks:
       - task: commit
       - gh pr create -t "{{ .BRANCH }}" -b "{{ .BRANCH }} branch into main"
       - sleep 20s
+      - gh repo set-default stuttgart-things/sthings-slides
       - gh pr checks $(gh pr list | grep "^[^#;]" | awk '{print $1}') --watch
       - gh pr merge $(gh pr list | grep "^[^#;]" | awk '{print $1}') --auto --rebase --delete-branch
       - git checkout main && git pull
