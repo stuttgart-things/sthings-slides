@@ -45,7 +45,7 @@ tasks:
       - |
         echo "ENTER COMMIT MESSAGE"
         read COMMIT_MESSAGE;
-        git add *
+        git add * || true
         git commit -am "$(echo ${COMMIT_MESSAGE})"
         git push origin -u {{ .BRANCH }}
 
